@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # Example of regular route:
    scope :slack do
      post 'command' => 'bot#command'
+     post 'oauth' => 'bot#oauth'
    end
 
   # Example of named route that can be invoked with purchase_url(id: product.id)

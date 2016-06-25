@@ -1,12 +1,22 @@
 class BotController < ApplicationController
   require 'clearbit'
-
-
+  include HTTParty
 
   def index
 
   end
 
+  def oauth
+    result = HTTParty.post(
+      'https://slack.com/api/oauth.access',
+      body: { client_id: ENV['SLACK_ID'], client_secret: ENV['SLACK_SECRET'], code: params[:code] }
+    ).parsed_response
+    if result['ok'] == true
+      render text: "Bot added!"
+    else
+      render text: "Bot not added :("
+    end
+  end
 
   def command
     case params[:command]
