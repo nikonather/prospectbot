@@ -6,6 +6,8 @@ default: &default
   url: <%= ENV['DATABASE_URL'] %>
 
 development:
+  database: prospectbot_development
+  url: postgresql://localhost/prospectbot_development
   <<: *default
 
 # Warning: The database defined as "test" will be erased and
@@ -15,4 +17,5 @@ test:
   <<: *default
 
 production:
+  database: prospectbot_production
   <<: *default
