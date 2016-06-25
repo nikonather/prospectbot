@@ -23,9 +23,9 @@ class BotController < ApplicationController
     when "/prospect" #[role at company] [executive/director/manager] at [company domain]
       botquery = /(\w+)\s+(\w+)\s+at\s+([\w\.]+)/
       matched = botquery.match(params[:text])
-      role = searchRole(matched["1"])[:name]
-      seniority = matched["2"].downcase
-      domain = matched["3"].downcase.gsub!('www.','').gsub!('http://','').gsub!('https://','')
+      role = searchRole(matched[1])[:name]
+      seniority = matched[2].downcase
+      domain = matched[3].downcase.gsub!('www.','').gsub!('http://','').gsub!('https://','')
       results = searchClearbit(role: role, seniority: seniority, domain: domain)
       answer += "I found #{results.count} " + "prospect".pluralize(results.count) + ":"
       results.each do |result|
