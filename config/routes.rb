@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # Example of regular route:
    scope :slack do
      post 'command' => 'bot#command'
+     get'oauth' => 'bot#oauth'
      post 'oauth' => 'bot#oauth'
    end
 
