@@ -25,11 +25,11 @@ class BotController < ApplicationController
       matched = botquery.match(params[:text])
       role = searchRole(matched[1])[:name]
       seniority = matched[2].downcase
-      domain = matched[3].downcase.gsub!('www.','').gsub!('http://','').gsub!('https://','')
-      results = searchClearbit(role: role, seniority: seniority, domain: domain)
-      answer += "I found #{results.count} " + "prospect".pluralize(results.count) + ":"
+      domain = matched[3].downcase#.gsub!('www.','').gsub!('http://','').gsub!('https://','')
+      results = clearbitSearch(role: role, seniority: seniority, domain: domain)
+      answer = "I found #{results.count} " + "prospect".pluralize(results.count) + ":"
       results.each do |result|
-        answer += "\n#{result[:full_name]}, {result[:title]}, {result[:email]}"
+        answer += "\n#{result[:full_name]} #{result[:title]} #{result[:email]}"
       end
       payload = {
         text: answer
@@ -53,7 +53,9 @@ class BotController < ApplicationController
     end
     nil
   end
+
   def clearbitSearch(role:,seniority:,domain:)
+    Clearbit.key = ENV['CLEARBIT_KEY']
     peoples = Clearbit::Prospector.search(role: role, seniority: seniority, domain: domain, limit: 1)
     peoples.map { |people| {full_name: people.name.full_name, title: people.title, email: people.email} }
   end
